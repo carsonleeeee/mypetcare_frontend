@@ -1,8 +1,37 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'local_notications_helper.dart';
+import 'page/second_page.dart';
+import 'package:animated_splash/animated_splash.dart';
+
 void main() {
-  runApp(MyApp());
+  Function duringSplash = () {
+    print('Something background process');
+    int a = 123 + 23;
+    print(a);
+
+    if (a > 100)
+      return 1;
+    else
+      return 2;
+  };
+
+  Map<int, Widget> op = {1: MyApp(), 2: MyApp()};
+  
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: AnimatedSplash(
+      imagePath: 'assets/images/petcare.jpeg',
+      home: MyApp(),
+      customFunction: duringSplash,
+      duration: 2500,
+      type: AnimatedSplashType.BackgroundProcess,
+      outputAndHome: op,
+    ),
+  ));
 } 
 
 alertDialog(BuildContext context,type,msg) {
@@ -93,6 +122,29 @@ class _MyHomePageState extends State<MyHomePage> {
   bool remember = true;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
+  final notifications = FlutterLocalNotificationsPlugin();
+
+  @override
+  void initState() {
+    super.initState();
+
+    var initializationSettingsAndroid =
+    new AndroidInitializationSettings('app_icon');
+    final settingsIOS = IOSInitializationSettings(
+        onDidReceiveLocalNotification: (id, title, body, payload) =>
+            onSelectNotification(payload));
+
+    notifications.initialize(
+        InitializationSettings(initializationSettingsAndroid, settingsIOS),
+        onSelectNotification: onSelectNotification);
+  }
+
+  Future onSelectNotification(String payload) async => await Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => SecondPage(payload: payload)),
+  );
+  
+
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -134,7 +186,9 @@ class _MyHomePageState extends State<MyHomePage> {
         color: Color(0xff01A0C7),
         child: Text("Sign In", textAlign: TextAlign.center, style: style.copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
         onPressed: () {
-          alertDialog(context,'Information','Login successfully!');           
+          alertDialog(context,'Information','Login successfully!');
+          showOngoingNotification(notifications,
+                  title: 'PetCare', body: 'Login Successfully!');                   
         },
     );
                      
