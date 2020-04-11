@@ -1,9 +1,32 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-void main() {   
+void main() {
   runApp(MyApp());
 } 
+
+alertDialog(BuildContext context,type,msg) {
+  // This is the ok button
+  Widget ok = FlatButton(
+    child: Text("Okay"),
+    onPressed: () {Navigator.of(context, rootNavigator: true).pop('dialog');},
+  ); 
+  // show the alert dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+    return AlertDialog(
+    title: Text(type),
+    content: Text(msg),
+    actions: [
+      ok,
+    ],
+    elevation: 5,
+    
+  );
+    },
+  );
+}
 
 class Home extends StatefulWidget {
   @override
@@ -68,7 +91,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   bool remember = true;
-  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);  
+  TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   void _incrementCounter() {
     setState(() {
@@ -110,7 +133,8 @@ class _MyHomePageState extends State<MyHomePage> {
     final loginButon = RaisedButton(        
         color: Color(0xff01A0C7),
         child: Text("Sign In", textAlign: TextAlign.center, style: style.copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
-        onPressed: () {                                    
+        onPressed: () {
+          alertDialog(context,'Information','Login successfully!');           
         },
     );
                      
