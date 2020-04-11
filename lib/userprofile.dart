@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypetcare_userprofile/widgets/info_card.dart';
+import 'setting.dart';
 
 const phone = '+60 12-3456789';
 const email = 'sampleuser@gmail.com';
@@ -31,7 +32,11 @@ class UserProfile extends StatelessWidget {
           alignment: Alignment.centerRight,
           child: IconButton(
               icon: Icon(Icons.menu, color: Colors.teal[100]),
-               onPressed: (){                  
+               onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SettingPage())
+                  );
                 },
             ),
         ),
