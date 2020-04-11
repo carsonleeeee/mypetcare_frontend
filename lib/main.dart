@@ -188,7 +188,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           alertDialog(context,'Information','Login successfully!');
           showOngoingNotification(notifications,
-                  title: 'PetCare', body: 'Login Successfully!');                   
+                  title: 'PetCare', body: 'Login Successfully!');                  
         },
     );
                      
