@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'userprofile.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -188,7 +189,11 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           alertDialog(context,'Information','Login successfully!');
           showOngoingNotification(notifications,
-                  title: 'PetCare', body: 'Login Successfully!');                  
+                  title: 'PetCare', body: 'Login Successfully!');
+          Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => UserProfile())
+          );          
         },
     );
                      
