@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mypetcare_userprofile/models/profileList.dart';
 import 'package:mypetcare_userprofile/widgets/info_card.dart';
 import 'setting.dart';
 import 'models/appointmentField.dart';
+import 'models/userList.dart';
 
 const phone = '+60 12-3456789';
 const email = 'sampleuser@gmail.com';
@@ -10,9 +12,10 @@ const petname = 'Shino';
 
 
 class UserProfile extends StatefulWidget {
+  final UserList userList;
   bool editMode = false;
 
-  UserProfile({this.editMode});
+  UserProfile(this.userList,{this.editMode});
 
   @override
   _UserProfile createState() => _UserProfile();
@@ -48,7 +51,7 @@ class _UserProfile extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {    
     Column isEditMode(){
-      if(widget.editMode == true){
+      if(widget.userList.profileList.email == null || widget.editMode == true){
         edit = true;
       }
       else{
@@ -58,19 +61,19 @@ class _UserProfile extends State<UserProfile> {
       if(edit == false){
         return Column(children: <Widget>[
               InfoCard(
-                text: phone,
+                text: widget.userList.profileList.phone,
                 icon: Icons.phone,                
               ),
               InfoCard(
-                text: email,
+                text: widget.userList.profileList.email,
                 icon: Icons.email,                
               ),
               InfoCard(
-                text: pet,
+                text: widget.userList.profileList.pet,
                 icon: Icons.pets,                
               ),
               InfoCard(
-                text: petname,
+                text: widget.userList.profileList.petname,
                 icon: Icons.pets,                
               )
             ]);
@@ -87,11 +90,12 @@ class _UserProfile extends State<UserProfile> {
           SizedBox(height: 10.0),
           RaisedButton(                    
               child: Text("Save", textAlign: TextAlign.center, style: style.copyWith(color: Colors.white, fontWeight: FontWeight.bold)),                  
-              onPressed: () {                                                                                  
+              onPressed: () {                                                                  
+                widget.userList.profileList = ProfileList(userPhoneController.text, userEmailController.text, userPetController.text, userPetNameController.text);
                 alertDialog(context,'Information','Profile saved successfully!');
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SettingPage())
+                  MaterialPageRoute(builder: (context) => Setting(widget.userList))
                 );
               },
               color: Colors.teal
@@ -113,7 +117,7 @@ class _UserProfile extends State<UserProfile> {
                onPressed: (){
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SettingPage())
+                    MaterialPageRoute(builder: (context) => Setting(widget.userList))
                   );
                 },
             ),
@@ -131,7 +135,7 @@ class _UserProfile extends State<UserProfile> {
                     backgroundImage: AssetImage("assets/images/profile.jpg"), 
                   ),
                   Text(
-                    'John',
+                    widget.userList.username,
                     style: TextStyle(
                       fontSize: 40.0,
                       color: Colors.white,

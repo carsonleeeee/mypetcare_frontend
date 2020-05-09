@@ -2,18 +2,17 @@ import "dart:async";
 import 'package:flutter/material.dart';
 import 'package:mypetcare_userprofile/main.dart';
 import 'userprofile.dart';
+import 'models/userList.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class Setting extends StatefulWidget {
+  final UserList userList;
+
+  Setting(this.userList);
+
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Setting Page',
-      home: SettingPage(),
-    );
-  }
+  _SettingPage createState() => _SettingPage();
 }
 
 alertDialog(BuildContext context,type,msg) {
@@ -39,7 +38,7 @@ alertDialog(BuildContext context,type,msg) {
   );
 }
 
-class SettingPage extends StatelessWidget {
+class _SettingPage extends State<Setting> {
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +67,7 @@ class SettingPage extends StatelessWidget {
                     onTap: (){
                       //open user profile
                     },
-                    title: Text("Natalia John",style: TextStyle(color: Colors.white, fontWeight: 
+                    title: Text(widget.userList.username,style: TextStyle(color: Colors.white, fontWeight: 
                     FontWeight.w500),),
                     leading: CircleAvatar(
                        radius: 10.0,
@@ -78,7 +77,7 @@ class SettingPage extends StatelessWidget {
                         onLongPress: (){
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => UserProfile())
+                            MaterialPageRoute(builder: (context) => UserProfile(widget.userList,editMode: true))
                           );
                         },
                   ),
@@ -169,10 +168,11 @@ class SettingPage extends StatelessWidget {
               icon: Icon(Icons.power_settings_new, color: Colors.black),
               onPressed: () async {
                 alertDialog(context,'Information','Logout succesfully!');
-                await new Future.delayed(const Duration(seconds : 3));
+                await new Future.delayed(const Duration(seconds : 1));
+                
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MyHomePage())
+                  MaterialPageRoute(builder: (context) => MyApp())
                 );                
               },
             ),
@@ -185,10 +185,10 @@ class SettingPage extends StatelessWidget {
 
   Container buildDivider() {
     return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                    width: double.infinity,
-                    height: 1.0,
-                    color: Colors.grey.shade400,
-                    );
+      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+      width: double.infinity,
+      height: 1.0,
+      color: Colors.grey.shade400,
+    );
   }
 }

@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'userprofile.dart';
+import 'booking.dart';
+import 'models/MockBooking.dart';
+import 'models/MockProfile.dart';
+import 'models/bookingList.dart';
+import 'models/MockUser.dart';
+import 'models/userList.dart';
+import 'signup.dart';
 import 'HomePage.dart';
 
 import 'package:flutter/cupertino.dart';
@@ -59,72 +65,39 @@ alertDialog(BuildContext context,type,msg) {
   );
 }
 
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Home'),
-        ),
-        body: Center(
-            child: Text('My Cool App',
-                style: TextStyle(color: Colors.black, fontSize: 20.0))));
-  }
-}
-
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'PetCare',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
+      theme: ThemeData(        
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'LOGIN'),
+      home: MyHomePage(title: 'LOGIN',userList: mockUserList,),
       debugShowCheckedModeBanner: false
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
+  MyHomePage({Key key, this.title, this.userList}) : super(key: key); 
   final String title;
-
+  final List<UserList> userList;  
+  
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _MyHomePageState extends State<MyHomePage> {  
   bool remember = true;
+  bool verified = false;
+  int userListIndex = 0;
   TextStyle style = TextStyle(fontFamily: 'Montserrat', fontSize: 20.0);
 
   final notifications = FlutterLocalNotificationsPlugin();
+  final userNameController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -144,19 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future onSelectNotification(String payload) async => await Navigator.push(
     context,
     MaterialPageRoute(builder: (context) => SecondPage(payload: payload)),
-  );
-  
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  ); 
 
   @override
   Widget build(BuildContext contextNew) {
@@ -167,6 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     final emailField = TextField(
+      controller: userNameController,
       obscureText: false,
       style: style,
       decoration: InputDecoration(
@@ -176,6 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
               OutlineInputBorder()),
     );
     final passwordField = TextField(
+      controller: passwordController,
       obscureText: true,
       style: style,
       decoration: InputDecoration(
@@ -187,18 +150,34 @@ class _MyHomePageState extends State<MyHomePage> {
     final loginButon = RaisedButton(        
         color: Color(0xff01A0C7),
         child: Text("Sign In", textAlign: TextAlign.center, style: style.copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
-        onPressed: () {
-          alertDialog(context,'Information','Login successfully!');
-          showOngoingNotification(notifications,
-                  title: 'PetCare', body: 'Login Successfully!');
-          Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage())
-          );          
+        onPressed: () {             
+          for(int i=0;i<widget.userList.length;i++){
+            String name = userNameController.text.replaceAll(' ', '');
+            String pwd = passwordController.text.replaceAll(' ', '');
+            if(name == widget.userList[i].username && pwd == widget.userList[i].password){              
+              verified = true;
+              userListIndex = i;
+              break;
+            }
+          }
+
+          if(verified == true){
+            alertDialog(context,'Information','Login successfully!');
+            showOngoingNotification(notifications,
+                    title: 'PetCare', body: 'Login Successfully!');
+            Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage(mockUserList[userListIndex],mockBookingList))
+            );          
+          }
+          else{
+            alertDialog(context,'Information','Login failure!');
+          }
         },
     );
                      
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: Center(
         child: Container(                                    
           color: Colors.white,
@@ -260,16 +239,23 @@ class _MyHomePageState extends State<MyHomePage> {
                   alignment: Alignment.bottomRight,
                   child: Column(
                     children: <Widget>[   
-                      SizedBox(height: 200.0),                          
+                      SizedBox(height: 150.0),                          
                       Row(
                         children: [                          
                           Text('New Member? Click here to ',                                        
-                                style: TextStyle(fontSize: 18,color: Colors.indigo[900], fontWeight: FontWeight.bold)),
-                          Text('Sign Up',                                        
-                                style: TextStyle(fontSize: 18,color: Colors.blue, fontWeight: FontWeight.bold))  
+                                style: TextStyle(fontSize: 18,color: Colors.indigo[900], fontWeight: FontWeight.bold)),                          
+                          InkWell(
+                              child: Text('Sign Up',style: TextStyle(fontSize: 18,color: Colors.blue, fontWeight: FontWeight.bold))  ,
+                              onTap: () {
+                                Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SignUp())
+                                ); 
+                              },
+                          )
                         ])
                   ])
-                ),                  
+                )                          
               ],
             ),
           ),
