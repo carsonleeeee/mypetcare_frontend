@@ -16,6 +16,28 @@ class MyApp extends StatelessWidget {
   }
 }
 
+alertDialog(BuildContext context,type,msg) {
+  // This is the ok button
+  Widget ok = FlatButton(
+    child: Text("Okay"),
+    onPressed: () {Navigator.of(context, rootNavigator: true).pop('dialog');},
+  ); 
+  // show the alert dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+    return AlertDialog(
+    title: Text(type),
+    content: Text(msg),
+    actions: [
+      ok,
+    ],
+    elevation: 5,
+    
+  );
+    },
+  );
+}
 
 class SettingPage extends StatelessWidget {
 
