@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'userprofile.dart';
+import 'HomePage.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -192,7 +193,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   title: 'PetCare', body: 'Login Successfully!');
           Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => UserProfile())
+          MaterialPageRoute(builder: (context) => HomePage())
           );          
         },
     );
