@@ -1,6 +1,13 @@
 class ProfileList {
-  String phone,email,pet,petname;
+  String phone,pet,petname;
 
-  ProfileList(this.phone,this.email,this.pet,this.petname);
-  ProfileList.copy(ProfileList from): this(from.phone,from.email,from.pet,from.petname);
+  ProfileList(this.phone,this.pet,this.petname);
+  ProfileList.copy(ProfileList from): this(from.phone,from.pet,from.petname);
+
+  ProfileList.fromJson(Map<String, dynamic> json)
+      : this(
+            json['phone'], json['pet'], json['petname']);
+
+  Map<String, dynamic> toJson() =>
+      {'phone': phone, 'pet': pet, 'petname': petname};
 }

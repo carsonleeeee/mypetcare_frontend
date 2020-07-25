@@ -1,6 +1,6 @@
-import 'userList.dart';
+/*import 'userList.dart';
 import 'MockProfile.dart';
 
-List<UserList> mockUserList = [
-  UserList("admin","admin@gmail.com","admin",mockProfile1)
-];
+List<User> mockUserList = [
+  User(1,"admin","admin@gmail.com","admin",mockProfile1)
+];*/

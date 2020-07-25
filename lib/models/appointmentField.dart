@@ -31,7 +31,11 @@ Container phoneField = Container(
   width: 200.0,
   height: 25.0,
   child: new TextField(  
-          controller: phoneController,                                   
+          controller: phoneController,  
+          decoration: InputDecoration(
+            hintText: '010-xxxxxxx',
+            contentPadding: EdgeInsets.fromLTRB(15, 0, 15, 12),
+          )
         )
 );
 
@@ -39,7 +43,11 @@ Container dateField = Container(
   width: 200.0,
   height: 25.0,
   child: new TextField(  
-          controller: dateController,                                   
+          controller: dateController,  
+          decoration: InputDecoration(
+            hintText: '30-12-2020',
+            contentPadding: EdgeInsets.fromLTRB(15, 0, 15, 12),
+          )                                 
         )
 );
 
@@ -47,13 +55,17 @@ Container timeField = Container(
   width: 200.0,
   height: 25.0,
   child: new TextField(  
-          controller: timeController,                                   
+          controller: timeController,
+          decoration: InputDecoration(
+            hintText: '1600',
+            contentPadding: EdgeInsets.fromLTRB(15, 0, 15, 12),
+          )                                   
         )
 );
 
 Container userPhoneField = Container(            
   width: 280.0,            
-  height: 50.0,
+  height: 80.0,
   child: TextField(      
     controller: userPhoneController,
     style: new TextStyle(fontSize: 18.0,color: Colors.teal),
@@ -65,14 +77,16 @@ Container userPhoneField = Container(
           prefixIcon: const Icon(
             Icons.phone,color: Colors.teal                    
           ),        
-          focusedBorder: InputBorder.none,          
+          focusedBorder: InputBorder.none, 
+          hintText: 'Phone No',
+          contentPadding: EdgeInsets.fromLTRB(15, 15, 15, 15),         
         ),
   ),
 );
 
 Container userEmailField = Container(            
   width: 280.0,     
-  height: 50.0,       
+  height: 80.0,       
   child: TextField(      
     controller: userEmailController,
     style: new TextStyle(fontSize: 18.0,color: Colors.teal),
@@ -84,14 +98,16 @@ Container userEmailField = Container(
           prefixIcon: const Icon(
             Icons.email,color: Colors.teal                    
           ),        
-          focusedBorder: InputBorder.none,          
+          focusedBorder: InputBorder.none,  
+          hintText: 'Email Address',
+          contentPadding: EdgeInsets.fromLTRB(15, 15, 15, 15),        
         ),
   ),
 );
 
 Container userPetField = Container(            
   width: 280.0,    
-  height: 50.0,        
+  height: 80.0,        
   child: TextField(      
     controller: userPetController,
     style: new TextStyle(fontSize: 18.0,color: Colors.teal),
@@ -103,14 +119,16 @@ Container userPetField = Container(
           prefixIcon: const Icon(
             Icons.pets,color: Colors.teal                    
           ),        
-          focusedBorder: InputBorder.none,          
+          focusedBorder: InputBorder.none,   
+          hintText: 'Pet Category', 
+          contentPadding: EdgeInsets.fromLTRB(15, 15, 15, 15),      
         ),
   ),
 );
 
 Container userPetNameField = Container(            
   width: 280.0,    
-  height: 50.0,          
+  height: 80.0,          
   child: TextField(      
     controller: userPetNameController,
     style: new TextStyle(fontSize: 18.0,color: Colors.teal),
@@ -122,7 +140,9 @@ Container userPetNameField = Container(
           prefixIcon: const Icon(
             Icons.pets,color: Colors.teal                    
           ),        
-          focusedBorder: InputBorder.none,          
+          focusedBorder: InputBorder.none,
+          hintText: 'Pet Name', 
+          contentPadding: EdgeInsets.fromLTRB(15, 15, 15, 15),         
         ),
   ),
 );
